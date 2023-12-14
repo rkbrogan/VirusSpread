@@ -2,30 +2,38 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug",
-            "type": "cppdbg",
+            "type": "lldb",
             "request": "launch",
+            "name": "Launch",
+            "program": "${workspaceFolder}/bin/virus_test_runner",
             "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "linux": {
-                "MIMode": "gdb",
-                "miDebuggerPath": "gdb",
-                "program": "${workspaceFolder}/output/main"
-            },
-            "osx": {
-                "MIMode": "lldb",
-                "miDebuggerPath": "lldb-mi",
-                "program": "${workspaceFolder}/output/main"
-            },
-            "windows": {
-                "MIMode": "gdb",
-                "miDebuggerPath": "gdb.exe",
-                "program": "${workspaceFolder}/output/main.exe"
-            },
-            "preLaunchTask": "build"
-        }
+            "cwd": "${workspaceFolder}"
+        },
+        // {
+        //     "name": "Debug",
+        //     "type": "cppdbg",
+        //     "request": "launch",
+        //     "args": [],
+        //     "stopAtEntry": false,
+        //     "cwd": "${workspaceFolder}",
+        //     "environment": [],
+        //     "externalConsole": false,
+        //     "linux": {
+        //         "MIMode": "gdb",
+        //         "miDebuggerPath": "gdb",
+        //         "program": "${workspaceFolder}/bin/virus_test_runner"
+        //     },
+        //     "osx": {
+        //         "MIMode": "lldb",
+        //         "miDebuggerPath": "lldb-mi",
+        //         "program": "${workspaceFolder}/bin/virus_test_runner"
+        //     },
+        //     "windows": {
+        //         "MIMode": "gdb",
+        //         "miDebuggerPath": "gdb.exe",
+        //         "program": "${workspaceFolder}/output/main.exe"
+        //     },
+        //     "preLaunchTask": "build"
+        // }
     ]
 }

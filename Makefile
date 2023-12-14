@@ -1,99 +1,145 @@
 #
-# 'make'        build executable file 'main'
-# 'make clean'  removes all .o and executable files
+#
+# Makefile for Virus Project
+#
+# Author: Riley Brogan
+#
 #
 
-# define the C compiler to use
-CC = gcc
+# Binary name
+BINARY := virus
 
-# define any compile-time flags
-CFLAGS	:= -Wall -Wextra -g
+# Gets the Operating system name
+OS := $(shell uname -s)
 
-# define library paths in addition to /usr/lib
-#   if I wanted to include libraries not in /usr/lib I'd specify
-#   their path using -Lpath, something like:
-LFLAGS =
+# Source code directory structure
+DIRS   := Simulate Analyze Visualize
+BINDIR := bin
+SRCDIR := src
+LOGDIR := log
+INCDIR := include
+LIBDIR := libs
+EXTDIR := externals
+TESTDIR := test
 
-# define output directory
-OUTPUT	:= output
+# Source code file extension
+SRCEXT := c
 
-# define source directory
-SRC		:= src
+# Header file extension
+HEADEXT := h
 
-# define include directory
-INCLUDE	:= include
+# Defines the C Compiler
+CC := gcc
 
-# define lib directory
-LIB		:= lib
+# Defines the language standards for GCC
+STD := -std=gnu99 # See man gcc for more options
 
-ifeq ($(OS),Windows_NT)
-MAIN	:= main.exe
-SOURCEDIRS	:= $(SRC)
-INCLUDEDIRS	:= $(INCLUDE)
-LIBDIRS		:= $(LIB)
-FIXPATH = $(subst /,\,$1)
-RM			:= del /q /f
-MD	:= mkdir
-else
-MAIN	:= main
-SOURCEDIRS	:= $(shell find $(SRC) -type d)
-INCLUDEDIRS	:= $(shell find $(INCLUDE) -type d)
-LIBDIRS		:= $(shell find $(LIB) -type d)
-FIXPATH = $1
-RM = rm -f
-MD	:= mkdir -p
-endif
+# Protection for stack-smashing attack
+STACK := -fstack-protector-all -Wstack-protector
 
-# define any directories containing header files other than /usr/include
-INCLUDES	:= $(patsubst %,-I%, $(INCLUDEDIRS:%/=%))
+# Specifies to GCC the required warnings
+WARNS := -Wall -Wextra -pedantic # -pedantic warns on language standards
 
-# define the C libs
-LIBS		:= $(patsubst %,-L%, $(LIBDIRS:%/=%))
+TEST_WARNS := -Wno-unused-parameter
+# TEST_WARNS := -Wunused-parameter
 
-# define the C source files
-SOURCES		:= $(wildcard $(patsubst %,%/*.c, $(SOURCEDIRS)))
+TEST_FLAGS := -DMUNIT_TEST_NAME_LEN=60 -DMUNIT_NO_FORK
 
-# define the C object files 
-OBJECTS		:= $(SOURCES:.c=.o)
+# Flags for compiling
+CFLAGS := $(STD) $(STACK) $(WARNS) -I$(INCDIR)
 
-# define the dependency output files
-DEPS		:= $(OBJECTS:.o=.d)
+# Debug options
+DEBUG := -g3 -DDEBUG=1
+
+# Dependency files
+DEPS := $(INCDIR)
+
+# Dependency libraries
+LIBS := -Ilib
+
+# Test libraries
+TEST_LIBS := -I$(EXTDIR)/munit
+
+# Tests binary file
+TEST_BINARY := $(BINARY)_test_runner
+
+# Source files
+SRC_FILES := $(wildcard $(dir) $(SRCDIR)/*/*.c)
+
+# %.o file names
+NAMES := $(notdir $(basename $(wildcard $(SRCDIR)/$(SRC_FILES))))
+OBJECTS :=$(patsubst %,$(LIBDIR)/%.o,$(NAMES))
+
 
 #
-# The following part of the makefile is generic; it can be used to 
-# build any executable just by changing the definitions above and by
-# deleting dependencies appended to the file from 'make depend'
+# COMPILATION RULES
 #
 
-OUTPUTMAIN	:= $(call FIXPATH,$(OUTPUT)/$(MAIN))
+default: all
 
-all: $(OUTPUT) $(MAIN)
-	@echo Executing 'all' complete!
+# Help message
+help:
+	@echo "C Project Template"
+	@echo
+	@echo "Target rules:"
+	@echo "    all      - Compiles and generates binary file"
+	@echo "    tests    - Compiles with cmocka and run tests binary file"
+	@echo "    start    - Starts a new project using C project template"
+	@echo "    valgrind - Runs binary file using valgrind tool"
+	@echo "    clean    - Clean the project by removing binaries"
+	@echo "    help     - Prints a help message with target rules"
 
-$(OUTPUT):
-	$(MD) $(OUTPUT)
 
-$(MAIN): $(OBJECTS) 
-	$(CC) $(CFLAGS) $(INCLUDES) -o $(OUTPUTMAIN) $(OBJECTS) $(LFLAGS) $(LIBS)
+# Starts a new project using C project template
+start:
+	@echo "Creating project: $(PROJECT_NAME)"
+	@mkdir -pv $(PROJECT_PATH)
+	@echo "Copying files from template to new directory:"
+	@cp -rvf ./* $(PROJECT_PATH)/
+	@echo
+	@echo "Go to $(PROJECT_PATH) and compile your project: make"
+	@echo "Then execute it: bin/$(BINARY) --help"
+	@echo "Happy hacking o/"
 
-# include all .d files
--include $(DEPS)
 
-# this is a suffix replacement rule for building .o's and .d's from .c's
-# it uses automatic variables $<: the name of the prerequisite of
-# the rule(a .c file) and $@: the name of the target of the rule (a .o file) 
-# -MMD generates dependency output files same name as the .o file
-# (see the gnu make manual section about automatic variables)
-.c.o:
-	$(CC) $(CFLAGS) $(INCLUDES) -c -MMD $<  -o $@
+# Rule for link and generate the binary file
+all: $(OBJECTS)
+	@echo -en "$(BROWN)LD $(END_COLOR)";
+	$(CC) -o $(BINDIR)/$(BINARY) $+ $(DEBUG) $(CFLAGS) $(LIBS)
+	@echo -en "\n--\nBinary file placed at" \
+			  "$(BROWN)$(BINDIR)/$(BINARY)$(END_COLOR)\n";
 
-.PHONY: clean
+
+# Rule for object binaries compilation
+$(LIBDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
+	@echo -en "$(BROWN)CC $(END_COLOR)";
+	$(CC) -c $^ -o $@ $(DEBUG) $(CFLAGS) $(LIBS)
+
+
+# Rule for run valgrind tool
+# TODO: setup valgrind for test binary (reset line 126 to '$(BINDIR)/$(BINARY)')
+valgrind:
+	valgrind \
+		--track-origins=yes \
+		--leak-check=full \
+		--leak-resolution=high \
+		--log-file=$(LOGDIR)/$@.log \
+		$(BINDIR)/$(TEST_BINARY)
+	@echo -en "\nCheck the log file: $(LOGDIR)/$@.log\n"
+
+
+# Compile tests and run the test binary
+tests:
+	@echo SRC_FILES $(SRC_FILES);
+	@echo -en "$(BROWN)CC $(END_COLOR)";
+	$(CC) $(TEST_FLAGS) $(EXTDIR)/munit/munit.c $(SRC_FILES) $(TESTDIR)/*.$(SRCEXT) -o $(BINDIR)/$(TEST_BINARY) $(DEBUG) $(CFLAGS) $(TEST_WARNS) $(LIBS) $(TEST_LIBS)
+	@which ldconfig && ldconfig -C /tmp/ld.so.cache || true # caching the library linking
+	@echo -en "$(BROWN) Running tests: $(END_COLOR)";
+	./$(BINDIR)/$(TEST_BINARY)
+
+
+# Rule for cleaning the project
 clean:
-	$(RM) $(OUTPUTMAIN)
-	$(RM) $(call FIXPATH,$(OBJECTS))
-	$(RM) $(call FIXPATH,$(DEPS))
-	@echo Cleanup complete!
+	@rm -rvf $(BINDIR)/* $(LIBDIR)/* $(LOGDIR)/*;
 
-run: all
-	./$(OUTPUTMAIN)
-	@echo Executing 'run: all' complete!
+
