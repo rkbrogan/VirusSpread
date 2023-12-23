@@ -9,11 +9,14 @@
 # Binary name
 BINARY := virus
 
+# Main
+MAIN := main
+
 # Gets the Operating system name
 OS := $(shell uname -s)
 
 # Source code directory structure
-DIRS   := Simulate Analyze Visualize
+#DIRS   := Simulate Analyze Visualize
 BINDIR := bin
 SRCDIR := src
 LOGDIR := log
@@ -32,7 +35,7 @@ HEADEXT := h
 CC := gcc
 
 # Defines the language standards for GCC
-STD := -std=gnu99 # See man gcc for more options
+STD := -std=c11 # See man gcc for more options
 
 # Protection for stack-smashing attack
 STACK := -fstack-protector-all -Wstack-protector
@@ -64,7 +67,7 @@ TEST_LIBS := -I$(EXTDIR)/munit
 TEST_BINARY := $(BINARY)_test_runner
 
 # Source files
-SRC_FILES := $(wildcard $(dir) $(SRCDIR)/*/*.c)
+SRC_FILES := $(wildcard $(dir) $(SRCDIR)/*.c)
 
 # %.o file names
 NAMES := $(notdir $(basename $(wildcard $(SRCDIR)/$(SRC_FILES))))
@@ -102,10 +105,12 @@ start:
 	@echo "Happy hacking o/"
 
 
+all: main tests
+
 # Rule for link and generate the binary file
-all: $(OBJECTS)
+main: $(OBJECTS)
 	@echo -en "$(BROWN)LD $(END_COLOR)";
-	$(CC) -o $(BINDIR)/$(BINARY) $+ $(DEBUG) $(CFLAGS) $(LIBS)
+	$(CC) $(SRC_FILES) $(SRCDIR)/main/main.c -o $(BINDIR)/$(BINARY) $+ $(DEBUG) $(CFLAGS) $(LIBS)
 	@echo -en "\n--\nBinary file placed at" \
 			  "$(BROWN)$(BINDIR)/$(BINARY)$(END_COLOR)\n";
 
