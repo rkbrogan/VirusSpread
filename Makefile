@@ -1,150 +1,70 @@
-#
-#
-# Makefile for Virus Project
-#
-# Author: Riley Brogan
-#
-#
+# Compiler
+CC = gcc
 
-# Binary name
-BINARY := virus
+# Compiler flags
+CFLAGS = -Wall -std=c11
 
-# Main
-MAIN := main
+# Directories
+INCLUDE_DIR = include
+SRC_DIR = src
+TEST_DIR = test
+BIN_DIR = bin
+LIBS_DIR = libs
 
-# Gets the Operating system name
-OS := $(shell uname -s)
+# Executable name
+BINARY = virus
 
-# Source code directory structure
-#DIRS   := Simulate Analyze Visualize
-BINDIR := bin
-SRCDIR := src
-LOGDIR := log
-INCDIR := include
-LIBDIR := libs
-EXTDIR := externals
-TESTDIR := test
+# Main program source files
+MAIN_SOURCES = $(wildcard $(SRC_DIR)/*.c)
+MAIN_OBJECTS = $(MAIN_SOURCES:$(SRC_DIR)/%.c=$(LIBS_DIR)/%.o)
+MAIN_EXECUTABLE = $(BIN_DIR)/$(BINARY)
 
-# Source code file extension
-SRCEXT := c
+# Test program source files
+TEST_SOURCES = $(wildcard $(TEST_DIR)/*.c) $(wildcard $(SRC_DIR)/*.c) externals/munit/munit.c
+TEST_OBJECTS = $(TEST_SOURCES:$(TEST_DIR)/%.c=$(LIBS_DIR)/%.o)
+TEST_EXECUTABLE = $(BIN_DIR)/$(BINARY)-test
 
-# Header file extension
-HEADEXT := h
+# Include paths
+INCLUDE_PATHS = -I$(INCLUDE_DIR) -Iexternals/munit
 
-# Defines the C Compiler
-CC := gcc
-
-# Defines the language standards for GCC
-STD := -std=c11 # See man gcc for more options
-
-# Protection for stack-smashing attack
-STACK := -fstack-protector-all -Wstack-protector
-
-# Specifies to GCC the required warnings
-WARNS := -Wall -Wextra -pedantic # -pedantic warns on language standards
-
-TEST_WARNS := -Wno-unused-parameter
-# TEST_WARNS := -Wunused-parameter
-
-TEST_FLAGS := -DMUNIT_TEST_NAME_LEN=60 -DMUNIT_NO_FORK
-
-# Flags for compiling
-CFLAGS := $(STD) $(STACK) $(WARNS) -I$(INCDIR)
-
-# Debug options
-DEBUG := -g3 -DDEBUG=1
-
-# Dependency files
-DEPS := $(INCDIR)
-
-# Dependency libraries
-LIBS := -Ilib
-
-# Test libraries
-TEST_LIBS := -I$(EXTDIR)/munit
-
-# Tests binary file
-TEST_BINARY := $(BINARY)_test_runner
-
-# Source files
-SRC_FILES := $(wildcard $(dir) $(SRCDIR)/*.c)
-
-# %.o file names
-NAMES := $(notdir $(basename $(wildcard $(SRCDIR)/$(SRC_FILES))))
-OBJECTS :=$(patsubst %,$(LIBDIR)/%.o,$(NAMES))
-
-
-#
-# COMPILATION RULES
-#
-
-default: all
-
-# Help message
-help:
-	@echo "C Project Template"
-	@echo
-	@echo "Target rules:"
-	@echo "    all      - Compiles and generates binary file"
-	@echo "    tests    - Compiles with cmocka and run tests binary file"
-	@echo "    start    - Starts a new project using C project template"
-	@echo "    valgrind - Runs binary file using valgrind tool"
-	@echo "    clean    - Clean the project by removing binaries"
-	@echo "    help     - Prints a help message with target rules"
-
-
-# Starts a new project using C project template
-start:
-	@echo "Creating project: $(PROJECT_NAME)"
-	@mkdir -pv $(PROJECT_PATH)
-	@echo "Copying files from template to new directory:"
-	@cp -rvf ./* $(PROJECT_PATH)/
-	@echo
-	@echo "Go to $(PROJECT_PATH) and compile your project: make"
-	@echo "Then execute it: bin/$(BINARY) --help"
-	@echo "Happy hacking o/"
-
-
+# Default target
 all: main tests
 
-# Rule for link and generate the binary file
-main: $(OBJECTS)
-	@echo -en "$(BROWN)LD $(END_COLOR)";
-	$(CC) $(SRC_FILES) $(SRCDIR)/main/main.c -o $(BINDIR)/$(BINARY) $+ $(DEBUG) $(CFLAGS) $(LIBS)
-	@echo -en "\n--\nBinary file placed at" \
-			  "$(BROWN)$(BINDIR)/$(BINARY)$(END_COLOR)\n";
+# Create bin and libs directories if they don't exist
+$(BIN_DIR) $(LIBS_DIR):
+	mkdir -p $@
+	@echo "Created $@ directory."
 
+# Rule to build object files for main program
+$(LIBS_DIR)/%.o: $(SRC_DIR)/%.c | $(LIBS_DIR)
+	$(CC) $(CFLAGS) $(INCLUDE_PATHS) -c $< -o $@
+	@echo "Compiled $< to $@"
 
-# Rule for object binaries compilation
-$(LIBDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
-	@echo -en "$(BROWN)CC $(END_COLOR)";
-	$(CC) -c $^ -o $@ $(DEBUG) $(CFLAGS) $(LIBS)
+# Rule to build the main program executable
+$(MAIN_EXECUTABLE): $(MAIN_OBJECTS)
+	$(CC) $(CFLAGS) $^ -o $@
+	@echo "Linked main program executable: $@"
 
+# Rule to build object files for test program
+$(LIBS_DIR)/%.o: $(TEST_DIR)/%.c | $(LIBS_DIR)
+	$(CC) $(CFLAGS) $(INCLUDE_PATHS) -c $< -o $@
+	@echo "Compiled $< to $@"
 
-# Rule for run valgrind tool
-# TODO: setup valgrind for test binary (reset line 126 to '$(BINDIR)/$(BINARY)')
-valgrind:
-	valgrind \
-		--track-origins=yes \
-		--leak-check=full \
-		--leak-resolution=high \
-		--log-file=$(LOGDIR)/$@.log \
-		$(BINDIR)/$(TEST_BINARY)
-	@echo -en "\nCheck the log file: $(LOGDIR)/$@.log\n"
+# Rule to build the test program executable
+$(TEST_EXECUTABLE): $(TEST_OBJECTS)
+	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $^ -o $@
+	@echo "Linked test program executable: $@"
 
+# Target for running tests
+tests: $(BIN_DIR) $(TEST_EXECUTABLE)
+	@$(TEST_EXECUTABLE)
+	@echo "Tests executed successfully."
 
-# Compile tests and run the test binary
-tests:
-	@echo SRC_FILES $(SRC_FILES);
-	@echo -en "$(BROWN)CC $(END_COLOR)";
-	$(CC) $(TEST_FLAGS) $(EXTDIR)/munit/munit.c $(SRC_FILES) $(TESTDIR)/*.$(SRCEXT) -o $(BINDIR)/$(TEST_BINARY) $(DEBUG) $(CFLAGS) $(TEST_WARNS) $(LIBS) $(TEST_LIBS)
-	@which ldconfig && ldconfig -C /tmp/ld.so.cache || true # caching the library linking
-	@echo -en "$(BROWN) Running tests: $(END_COLOR)";
-	./$(BINDIR)/$(TEST_BINARY)
+# Target for building main program
+main: $(BIN_DIR) $(MAIN_EXECUTABLE)
+	@echo "Main program build completed successfully."
 
-
-# Rule for cleaning the project
+# Clean up
 clean:
-	@rm -rvf $(BINDIR)/* $(LIBDIR)/* $(LOGDIR)/*;
-
-
+	@rm -rf $(LIBS_DIR) $(BIN_DIR)
+	@echo "Cleaned up the project."

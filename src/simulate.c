@@ -95,7 +95,7 @@ int die_or_not(double dprob, int sick_days, int person, int npeople, int status[
     return result;
 }
 
-int _main (int argc, char* argv[])
+int main (int argc, char* argv[])
 {
     const int npeople=1e+4;
     int status[npeople];
