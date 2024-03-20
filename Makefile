@@ -20,7 +20,8 @@ MAIN_OBJECTS = $(MAIN_SOURCES:$(SRC_DIR)/%.c=$(LIBS_DIR)/%.o)
 MAIN_EXECUTABLE = $(BIN_DIR)/$(BINARY)
 
 # Test program source files
-TEST_SOURCES = $(wildcard $(TEST_DIR)/*.c) $(wildcard $(SRC_DIR)/*.c) externals/munit/munit.c
+# TEST_SOURCES = $(wildcard $(TEST_DIR)/*.c) $(wildcard $(SRC_DIR)/*.c) externals/munit/munit.c
+TEST_SOURCES = $(filter-out $(SRC_DIR)/main.c, $(wildcard $(TEST_DIR)/*.c) $(wildcard $(SRC_DIR)/*.c) externals/munit/munit.c)
 TEST_OBJECTS = $(TEST_SOURCES:$(TEST_DIR)/%.c=$(LIBS_DIR)/%.o)
 TEST_EXECUTABLE = $(BIN_DIR)/$(BINARY)-test
 
@@ -42,6 +43,7 @@ $(LIBS_DIR)/%.o: $(SRC_DIR)/%.c | $(LIBS_DIR)
 
 # Rule to build the main program executable
 $(MAIN_EXECUTABLE): $(MAIN_OBJECTS)
+	@echo "main_sources: " $(MAIN_SOURCES)
 	$(CC) $(CFLAGS) $^ -o $@
 	@echo "Linked main program executable: $@"
 
@@ -52,6 +54,7 @@ $(LIBS_DIR)/%.o: $(TEST_DIR)/%.c | $(LIBS_DIR)
 
 # Rule to build the test program executable
 $(TEST_EXECUTABLE): $(TEST_OBJECTS)
+	@echo "test_sources: " $(TEST_SOURCES)
 	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $^ -o $@
 	@echo "Linked test program executable: $@"
 
