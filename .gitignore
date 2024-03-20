@@ -52,5 +52,5 @@ Mkfile.old
 dkms.conf
 
 # Program specific files
-virus_test_runner
-main
+virus-test
+virus
