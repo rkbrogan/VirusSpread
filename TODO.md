@@ -1,5 +1,20 @@
 # notes
 
+## 4/4
+
+- once again we focused mostly on build/debug config issues:
+  - `Makefile`, `task.json`, `launch.json`
+  - tools, *e.g.*, `clang` vs. `gcc`...
+  - debugger & extensions: `gdb`, `lldb`
+
+### 4/4 next
+
+- double check tools, extensions, *etc.*
+- any access to a *clean* Mac? Maybe a virtual one in the cloud:
+  - *clean* environment
+- **post-lesson** - working on `hello world` repo/app...get it working again on `virus`❗
+- how can I help get past this roadblock?
+
 ## 3/27
 
 - unfortunately, not a lot of progress this week
