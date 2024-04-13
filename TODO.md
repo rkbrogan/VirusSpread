@@ -1,5 +1,24 @@
 # notes
 
+## 4/12
+
+- unfortunately, more time spent on *configuration* issues:
+  - VS Code's *internal* build/debugger:
+    - `tasks.json`
+    - `launch.json`
+    - *etc.*
+  - external `Makefile`
+
+### 4/12 next
+
+- [ ] **complete** build/debug workflow for both the `virus` and `virus-test` executables, *or*, return to a single executable w/`test` as a fourth sub-command
+- ignoring *visualization*, the PDF describes *features*, that you should combine into a single executable:
+  1) command line parsing
+  2) mathematical-style `f()`-s - take some input and transform it to some output - no side-effects (*i.e.*, easier to UT)
+  3) output - anything from simulation summaries to `CSV` files for post-procerssoing, or...
+
+- [ ] **complete** (i.) using: [getopt(3) - Linux manual page](https://www.man7.org/linux/man-pages/man3/getopt.3.html)
+
 ## 4/4
 
 - once again we focused mostly on build/debug config issues:
