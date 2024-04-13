@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 
 int main (int argc, char* argv[])
@@ -23,9 +24,10 @@ int main (int argc, char* argv[])
     // Insert the rest of the program here
     
     // Check number of command line arguments
-    if (argc != 3)
+    if (argc != 4)
     {
-        printf("Not enough command line arguments.");
+        printf("Not enough command line arguments.\n");
+        printf("%d arguments given", argc);
         return -1;
     }
 
@@ -78,14 +80,14 @@ int main (int argc, char* argv[])
         fprintf(output, "%d %d %d %d %d %d\n", day, nsusceptible, nrecovered, nvaccinated, ninfected, ndead);
     }
 
-    // printf ( "Population: %d\n", npeople );
-    // printf ( "Vaccination Probability: %lf\n", vprob );
-    // printf ( "Transmission Probability: %lf\n", tprob );
-    // printf ( "Initial Infections: %d\n", initial_infections );
-    // printf ( "Simulation Period: %d days\n", ndays );
-    // printf ( "Number of Recovered: %d\n", nrecovered );
-    // printf ( "Number of Dead: %d\n", ndead );
-    // printf ( "Case Fatality Rate: %lf\n", (double)ndead/(nrecovered+ndead) );
+    printf ( "Population: %d\n", npeople );
+    printf ( "Vaccination Probability: %lf\n", vprob );
+    printf ( "Transmission Probability: %lf\n", tprob );
+    printf ( "Initial Infections: %d\n", initial_infections );
+    printf ( "Simulation Period: %d days\n", ndays );
+    printf ( "Number of Recovered: %d\n", nrecovered );
+    printf ( "Number of Dead: %d\n", ndead );
+    printf ( "Case Fatality Rate: %lf\n", (double)ndead/(nrecovered+ndead) );
 
     return 0;
 }

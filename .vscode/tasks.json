@@ -51,7 +51,18 @@
                 "command": "bash",
                 "args": [
                     "-c",
-                    "'make run'"
+                    "'make main'"
+                ]
+            }
+        },
+        {
+            "label": "build tests",
+            "type": "shell",
+            "osx": {
+                "command": "bash",
+                "args": [
+                    "-c",
+                    "make tests"
                 ]
             }
         },

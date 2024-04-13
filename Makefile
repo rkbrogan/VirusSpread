@@ -1,73 +1,57 @@
 # Compiler
-CC = gcc
-
-# Compiler flags
-CFLAGS = -Wall -std=c11
+CC = clang
 
 # Directories
-INCLUDE_DIR = include
-SRC_DIR = src
-TEST_DIR = test
-BIN_DIR = bin
-LIBS_DIR = libs
+SRCDIR = src
+INCDIR = include
+LIBDIR = libs
+BINDIR = bin
+TESTDIR = test
+EXTERNALDIR = externals
 
 # Executable name
 BINARY = virus
 
-# Main program source files
-MAIN_SOURCES = $(wildcard $(SRC_DIR)/*.c)
-MAIN_OBJECTS = $(MAIN_SOURCES:$(SRC_DIR)/%.c=$(LIBS_DIR)/%.o)
-MAIN_EXECUTABLE = $(BIN_DIR)/$(BINARY)
+# Files
+SRC = $(wildcard $(SRCDIR)/*.c)
+OBJ = $(patsubst $(SRCDIR)/%.c, $(LIBDIR)/%.o, $(SRC))
+TESTSRC = $(wildcard $(TESTDIR)/*.c) $(EXTERNALDIR)/munit/munit.c
+TESTOBJ = $(patsubst $(TESTDIR)/%.c, $(LIBDIR)/%.o, $(TESTSRC))
 
-# Test program source files
-# TEST_SOURCES = $(wildcard $(TEST_DIR)/*.c) $(wildcard $(SRC_DIR)/*.c) externals/munit/munit.c
-TEST_SOURCES = $(filter-out $(SRC_DIR)/main.c, $(wildcard $(TEST_DIR)/*.c) $(wildcard $(SRC_DIR)/*.c) externals/munit/munit.c)
-TEST_OBJECTS = $(TEST_SOURCES:$(TEST_DIR)/%.c=$(LIBS_DIR)/%.o)
-TEST_EXECUTABLE = $(BIN_DIR)/$(BINARY)-test
+# Flags
+CFLAGS = -I$(INCDIR) -Wall -Wextra -g
+LDFLAGS = 
 
-# Include paths
-INCLUDE_PATHS = -I$(INCLUDE_DIR) -Iexternals/munit
+# Targets
+EXECUTABLE = $(BINDIR)/$(BINARY)
+TEST_EXECUTABLE = $(BINDIR)/$(BINARY)-unit-tests
 
-# Default target
-all: main tests
+.PHONY: all clean tests
 
-# Create bin and libs directories if they don't exist
-$(BIN_DIR) $(LIBS_DIR):
-	mkdir -p $@
-	@echo "Created $@ directory."
+all: $(EXECUTABLE)
 
-# Rule to build object files for main program
-$(LIBS_DIR)/%.o: $(SRC_DIR)/%.c | $(LIBS_DIR)
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) -c $< -o $@
-	@echo "Compiled $< to $@"
+$(EXECUTABLE): $(OBJ)
+	@mkdir -p $(BINDIR)
+	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@
 
-# Rule to build the main program executable
-$(MAIN_EXECUTABLE): $(MAIN_OBJECTS)
-	@echo "main_sources: " $(MAIN_SOURCES)
-	$(CC) $(CFLAGS) $^ -o $@
-	@echo "Linked main program executable: $@"
+$(LIBDIR)/%.o: $(SRCDIR)/%.c
+	@mkdir -p $(LIBDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-# Rule to build object files for test program
-$(LIBS_DIR)/%.o: $(TEST_DIR)/%.c | $(LIBS_DIR)
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) -c $< -o $@
-	@echo "Compiled $< to $@"
+tests: CFLAGS += -I$(EXTERNALDIR)/munit
+tests: $(TEST_EXECUTABLE)
 
-# Rule to build the test program executable
-$(TEST_EXECUTABLE): $(TEST_OBJECTS)
-	@echo "test_sources: " $(TEST_SOURCES)
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $^ -o $@
-	@echo "Linked test program executable: $@"
+$(TEST_EXECUTABLE): $(filter-out $(LIBDIR)/main.o, $(OBJ)) $(TESTOBJ)
+	@mkdir -p $(BINDIR)
+	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@
+	@echo "\nRunning tests...\n"
+	@./$(TEST_EXECUTABLE)
 
-# Target for running tests
-tests: $(BIN_DIR) $(TEST_EXECUTABLE)
-	@$(TEST_EXECUTABLE)
-	@echo "Tests executed successfully."
+$(LIBDIR)/%.o: $(TESTDIR)/%.c
+	@mkdir -p $(LIBDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-# Target for building main program
-main: $(BIN_DIR) $(MAIN_EXECUTABLE)
-	@echo "Main program build completed successfully."
-
-# Clean up
 clean:
-	@rm -rf $(LIBS_DIR) $(BIN_DIR)
-	@echo "Cleaned up the project."
+	@rm -rf $(BINDIR) $(LIBDIR)
+	@echo rm -rf $(BINDIR) $(LIBDIR)
+	@echo "\nProject cleaned.\n"

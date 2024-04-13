@@ -1,39 +1,54 @@
 {
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "lldb",
+            "name": "(lldb) Launch Main",
+            "type": "cppdbg",
             "request": "launch",
-            "name": "Launch",
-            "program": "${workspaceFolder}/bin/virus_test_runner",
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "program": "${workspaceFolder}/bin/virus",
+            "args": ["0.0", "0.015", "simulate-debug.dat"],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb"
         },
-        // {
-        //     "name": "Debug",
-        //     "type": "cppdbg",
-        //     "request": "launch",
-        //     "args": [],
-        //     "stopAtEntry": false,
-        //     "cwd": "${workspaceFolder}",
-        //     "environment": [],
-        //     "externalConsole": false,
-        //     "linux": {
-        //         "MIMode": "gdb",
-        //         "miDebuggerPath": "gdb",
-        //         "program": "${workspaceFolder}/bin/virus_test_runner"
-        //     },
-        //     "osx": {
-        //         "MIMode": "lldb",
-        //         "miDebuggerPath": "lldb-mi",
-        //         "program": "${workspaceFolder}/bin/virus_test_runner"
-        //     },
-        //     "windows": {
-        //         "MIMode": "gdb",
-        //         "miDebuggerPath": "gdb.exe",
-        //         "program": "${workspaceFolder}/output/main.exe"
-        //     },
-        //     "preLaunchTask": "build"
-        // }
+        {
+            "name": "(lldb) Launch Unit Tests",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/virus-unit-tests",
+            "args": ["--color", 
+                    "always", 
+                    "--no-fork"],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb"
+        },
+        {
+            "name": "C Debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/virus-unit-tests",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "build tests"
+        }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "random.h": "c"
-    }
+        "random.h": "c",
+        "simulate_tests.h": "c",
+        "munit.h": "c"
+    },
+    "C_Cpp.default.compilerPath": "/usr/bin/clang"
 }
