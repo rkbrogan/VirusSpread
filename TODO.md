@@ -1,5 +1,28 @@
 # notes
 
+## 4/28
+
+- sounds like life’s been good...bro' visit...🎂🎳 w/friends...and even work's been challenging/interesting given your foray into the work of wi-fi networks
+- discussed the *ethics of analytics*😎
+- once you attempted to share your screen, we ran into a wierd bluriness problem, resolved by switching to Zoom for now...
+- a quick review of your implementation (which looked good), and some discussion led to a few recommendations:
+  - fully combine `simulate` and `analyze` vs. delineate by `ntrials`
+  - normalize console and data (files) formats
+  - surface all constants via the command line
+  - use `getopt` to parse and UT the command line arguments/options
+
+### 4/28 next
+
+- complete integration such that `ntrials` is just another argument
+- complete command line
+- complete UTs and implementation of core functions
+- consider what's next, *e.g.,* new project or `otp v.next`:
+  - concurrrency (threads)
+  - client/server
+  - I/O GUI:
+    - input: window based UI w/widgets, *etc.*
+    - output: various plots, dashboards, *etc.*
+
 ## 4/12
 
 - unfortunately, more time spent on *configuration* issues:

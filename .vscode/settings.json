@@ -4,5 +4,8 @@
         "simulate_tests.h": "c",
         "munit.h": "c"
     },
-    "C_Cpp.default.compilerPath": "/usr/bin/clang"
+    "C_Cpp.default.compilerPath": "/usr/bin/clang",
+    "cSpell.words": [
+        "ntrials"
+    ]
 }
