@@ -11,6 +11,7 @@
 
 int main (int argc, char* argv[])
 {
+    // TODO: Possibly define the constants in the command line arguments
     const int npeople=1e+4;
     int status[npeople];
     int newstatus[npeople];
@@ -29,9 +30,6 @@ int main (int argc, char* argv[])
 
     FILE *output;
 
-    // Insert the rest of the program here
-
-    // TODO: run simulate and analyze from here via command line arguments
     // TODO: decide how the format of output
     
     // Check number of command line arguments
@@ -48,8 +46,9 @@ int main (int argc, char* argv[])
     // TODO: Error check vprob and tprob
 
     output =  fopen(argv[3], "w");
-    // TODO: Error check output
 
+    // TODO: Change this to capture the number of trials from the command line instead of program name.
+    // GetOpt 
     // if 4th argument is "simulate", set ntrials to 1
     if (argc == 5)
     {
@@ -89,9 +88,11 @@ int main (int argc, char* argv[])
         // Set initial status of each person
         initialize_status(npeople, initial_infections, nvaccinated, status);
 
+        // TODO: Functionalize this loop
         // Simulate 100 days
         for (day = 0; day < ndays; day++)
         {
+            // TODO: Functionalize this loop
             // Simulate through population
             for (person = 0; person < npeople; person++)
             {
@@ -142,7 +143,7 @@ int main (int argc, char* argv[])
     printf ( "Transmission Probability: %lf\n", tprob );
     printf ( "Initial Infections: %d\n", initial_infections );
     printf ( "Simulation Period: %d days\n", ndays );
-    if (ntrials == 1)
+    if (ntrials != 1)
     {
         printf( "Number of trials: %d\n", ntrials );
         printf( "Average number of deaths: %lf\n", sum/ntrials );
