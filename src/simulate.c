@@ -66,6 +66,9 @@ int catch_or_not_wrapper(double tprob, int npeople, int status[])
     If person survives more than ~14 days, person is recovered.*/
 int die_or_not(double dprob, int sick_days, int person, int npeople, int status[])
 {
+    // Unsure if this is needed?
+    (void) npeople;
+
     int result = status[person];
 
     // Get number between 0 and 1
