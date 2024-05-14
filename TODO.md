@@ -1,5 +1,34 @@
 # notes
 
+## 5/13
+
+- worked on some details of using `getopt()` - *normalizing* command line args and processing
+- discussed need to:
+  - eliminate remnants of  `simulate`/`analyze` and make `nrtials` the differentiator
+    > may need to special case some calculations when `ntrials == 1`, in order to avoid *divide-by-zero*
+  - normalize (old) `simulate`/`analyze` *output*
+- committed 5/5 notes😎 (wrote 'em last week...never committed 'em...)
+
+### 5/13 next
+
+- define, and drive this implementation of `virus`, to completion: functionality, UI, testing, internal state...
+- consider `v.next`, a `MT` (multi-threaded) implementation of `virus` based on [POSIX Threads Programming | LLNL HPC Tutorials](https://hpc-tutorials.llnl.gov/posix/)
+  > I believe that *trials* is the natural *axis* to apply *threading*, but there may be others, *e.g.*, *person*, *etc.* ❓
+
+## 5/5
+
+- busy week so no progress…*c'est la vie*…
+- chatted about technical challenge at work – I suggested a *wrapping* approach:
+  > wrap old function w/new or new w/old
+- wrt `virus` we discussed [getopt/getopt_long](https://www.man7.org/linux/man-pages/man3/getopt.3.html) and its applicability to the objective of surfacing all constants (and variable/parameter values) to the command line
+
+### 5/5 next
+
+- complete implementation of command line parsing using `getop()`/`getoptlong()`
+- See previous
+
+> good luck and have fun!
+
 ## 4/28
 
 - sounds like life’s been good...bro' visit...🎂🎳 w/friends...and even work's been challenging/interesting given your foray into the work of wi-fi networks
