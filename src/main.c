@@ -86,11 +86,11 @@ int main(int argc, char *argv[])
     {
         switch (opt)
         {
-        case 'v':
-            vprob = atoi(optarg);
+        case 'v':   // Vaccination probability
+            vprob = atof(optarg);
             break;
         case 't':
-            tprob = atoi(optarg);
+            tprob = atof(optarg);
             break;
         case 'o':
             output = fopen(optarg, "w");
@@ -155,7 +155,6 @@ int main(int argc, char *argv[])
             // Copy newstatus to status
             update_status(npeople, status, newstatus);
 
-            // If simulate, print daily stats
             sumDead += ndead;
             sumDeadSquared += ndead * ndead;
             sumRecovered += nrecovered;
@@ -172,7 +171,9 @@ int main(int argc, char *argv[])
 
     printf("Number of trials: %d\n", ntrials);
     printf("Average number of deaths: %lf\n", sumDead / ntrials);
-    printf("Standard deviation of deaths: %lf\n", sqrt((sumDeadSquared - sumDead * sumDead / ntrials) / (ntrials - 1)));
+    double meanDeaths = sumDead / ntrials;
+    // printf("Standard deviation of deaths: %lf\n", sqrt((sumDeadSquared - (sumDead * (meanDeaths))) / (ntrials - 1)));
+    printf("Standard deviation of deaths: %lf\n", sqrt(((sumDead  - meanDeaths)*(sumDead - meanDeaths))/(ntrials)));
 
     printf("Average number of recoveries: %lf\n", sumRecovered/ntrials);
     printf("Average Case Fatality Rate: %lf\n", (double)sumDead / (sumRecovered + sumDead));
