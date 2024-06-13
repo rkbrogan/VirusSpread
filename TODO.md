@@ -1,5 +1,26 @@
 # notes
 
+## 6/11
+
+- Caught up on life, work, sleep…
+- Looked over virus state…at least one issue was due to using `atoi()` vs.`atof()`
+- Determined that virus functionality is done but code requires scrubbing
+  – structure, naming, style, dead code, commented out code, *etc.*
+  > Ensure that all remnants to simulate and analyze are eliminated
+- *What would you like to do WRT visualize?*
+
+### 6/11 next
+
+- Complete virus
+  - Determine where/how to add MT
+- Write a practice MT program w/ command line:  
+  > `./count n-threads sum lock`
+- Where each thread increments a counter until it reaches `sum`. The `sum` of each thread should then be added to a *grand total*. The lock boolean determines whether locking (mutexes) are employed. The program should display the grand total (`n-threads * sum`) based on the CLAs.
+- Include a timer capability to help measure differences.
+- Defaults: n-threads=1, sum=100,000, lock=false.
+
+Good luck and have fun!
+
 ## 5/13
 
 - worked on some details of using `getopt()` - *normalizing* command line args and processing
