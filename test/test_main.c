@@ -3,6 +3,7 @@
 #include "munit.h"
 
 #include "simulate_tests.h"
+#include "threads_tests.h"
 
 #define TEST(name) { (char*)#name, name, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 
@@ -35,7 +36,8 @@ static const MunitSuite test_suite = {
 	 * an empty string ("") instead. */
 	(char*)"suite/",
 	/* The first parameter is the array of test suites. */
-	simulate_tests,
+	// simulate_tests,
+	threads_tests,
 	/* In addition to containing test cases, suites can contain other
 	 * test suites.  This isn't necessary in this example, but it can be
 	 * a great help to projects with lots of tests by making it easier
