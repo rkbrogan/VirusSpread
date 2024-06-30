@@ -9,9 +9,15 @@
 #include <time.h>
 #include <unistd.h>
 
+/* TODO-RILEY 6/11: 
+    - Make function for standard deviation
+    - Add some comments
+    - Bring up to spec
+    - Write a simple threaded adder
+*/
+
 int main(int argc, char *argv[])
 {
-    // TODO: Possibly define the constants in the command line arguments
     const int npeople = 1e+4;
     int status[npeople];
     int newstatus[npeople];
@@ -30,49 +36,6 @@ int main(int argc, char *argv[])
     int ntrials;
 
     FILE *output;
-
-    // TODO: decide how the format of output
-
-    // TODO: Change this to capture the number of trials from the command line instead of program name.
-    // Check number of command line arguments
-    // if (argc < 4)
-    // {
-    //     printf("Not enough command line arguments.\n");
-    //     printf("%d arguments given", argc);
-    //     return -1;
-    // }
-
-    // // Set values from program arguments
-    // vprob = atof(argv[1]);
-    // tprob = atof(argv[2]);
-    // // TODO: Error check vprob and tprob
-
-    // output =  fopen(argv[3], "w");
-
-    // if 4th argument is "simulate", set ntrials to 1
-    // if (argc == 5)
-    // {
-    //     if (strcmp(argv[4], "simulate") == 0)
-    //     {
-    //         ntrials = 1;
-    //     }
-    //     // else "analyze"
-    //     else if (strcmp(argv[4], "analyze") == 0)
-    //     {
-    //         ntrials = 1000;
-    //     }
-    //     else
-    //     {
-    //         printf("Invalid argument given");
-    //         return -1;
-    //     }
-    // }
-    // else
-    // {
-    //     ntrials = 100;
-    // }
-
-    // Use getopt to retrieve command line arguments (vprob, tprob, output file, simulate/analyze, ntrials)
 
     if (argc != 9)
     {
@@ -154,13 +117,13 @@ int main(int argc, char *argv[])
 
             // Copy newstatus to status
             update_status(npeople, status, newstatus);
-
-            sumDead += ndead;
-            sumDeadSquared += ndead * ndead;
-            sumRecovered += nrecovered;
-
-            fprintf(output, "%d %d %d %d %d %d %d\n", day, trial, nsusceptible, nrecovered, nvaccinated, ninfected, ndead);
         }
+
+        sumDead += ndead;
+        sumDeadSquared += (ndead*ndead);
+        sumRecovered += nrecovered;
+        
+        fprintf(output, "%d %d %d %d %d %d %d\n", day, trial, nsusceptible, nrecovered, nvaccinated, ninfected, ndead);
     }
 
     printf("Population: %d\n", npeople);
@@ -171,9 +134,9 @@ int main(int argc, char *argv[])
 
     printf("Number of trials: %d\n", ntrials);
     printf("Average number of deaths: %lf\n", sumDead / ntrials);
+
     double meanDeaths = sumDead / ntrials;
-    // printf("Standard deviation of deaths: %lf\n", sqrt((sumDeadSquared - (sumDead * (meanDeaths))) / (ntrials - 1)));
-    printf("Standard deviation of deaths: %lf\n", sqrt(((sumDead  - meanDeaths)*(sumDead - meanDeaths))/(ntrials)));
+    printf("Standard deviation of deaths: %lf\n", sqrt((sumDeadSquared - (sumDead * (meanDeaths))) / (ntrials - 1)));
 
     printf("Average number of recoveries: %lf\n", sumRecovered/ntrials);
     printf("Average Case Fatality Rate: %lf\n", (double)sumDead / (sumRecovered + sumDead));
