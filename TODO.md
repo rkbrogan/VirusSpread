@@ -9,7 +9,7 @@
   - `QT`
   - *What else?*
 
-## 5/30 next
+## 6/30 next
 
 - Scope out potential jobs, and determine what tech skills need refining
   - *What's needed?*
