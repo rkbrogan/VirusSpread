@@ -1,5 +1,32 @@
 # notes
 
+## 6/30
+
+- Discussed how work does **not** value its employees – unless you’re a member of the *right* group
+- Discussed how you should *jump* before, eventually, getting *pushed*
+- Discussed – “*What makes you different?*”
+  - Embedded
+  - `QT`
+  - *What else?*
+
+## 5/30 next
+
+- Scope out potential jobs, and determine what tech skills need refining
+  - *What's needed?*
+- Complete MT UTs
+- Implement a MT count program that takes three command line arguments:
+  - Total (*e.g.*, `100000`)
+  - Number of threads (max. 8, *e.g.*, `4`)
+  - Lock (bool, *e.g.*, `-l`)  
+  
+  The program should create the requested number of threads and have each thread add to total, w/ or w/o locking  
+  
+  The results should print:
+  - Grand total (`sum * n_threads`, *e.g.*, 400000)
+  - Elapsed time (`m:ss.ms`)
+
+Good luck and have fun!
+
 ## 6/11
 
 - Caught up on life, work, sleep…
