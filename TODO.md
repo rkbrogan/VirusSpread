@@ -1,5 +1,23 @@
 # notes
 
+## 6/7
+
+- Today we started w/Elena’s harrowing (❗) story
+- Discussed whether to use a MT `main()` vs. UTs and opted for the latter
+- Wrote a simple UT to create/join a thread and discussed how passing arguments is tricky:
+  - Typical pattern is to `malloc()` a `struct` that contains the threads’ arguments
+
+### 6/7 next
+
+- Complete UTs to implement/test counter:
+  - Different count algorithms
+  - Different command line arguments
+  - Different partitioning:
+    - Work
+    - Data
+
+- Good luck and have fun!
+
 ## 6/30
 
 - Discussed how work does **not** value its employees – unless you’re a member of the *right* group
