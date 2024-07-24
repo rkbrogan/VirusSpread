@@ -79,11 +79,10 @@ static MunitResult thread_write_to_buffer(const MunitParameter params[], void* d
 
 
 /**************************************************************/
-/*************** Full collection of simulate tests ******************/
+/*************** Full collection of thread tests ******************/
 /**************************************************************/
 MunitTest threads_tests[] = {
     TEST(create_single_thread),
     TEST(thread_write_to_buffer),
-    // TEST_WITH_RESET(write_code_to_file_one_bit, reset_buffer),
     {NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL}
 };

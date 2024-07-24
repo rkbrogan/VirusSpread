@@ -49,6 +49,9 @@ static MunitResult simple_test(const MunitParameter params[], void* data)
 // Test: Simulate catch_or_not with population of zero people, trpob = 0.5
 static MunitResult catch_or_not_zero_people(const MunitParameter params[], void* data)
 {
+    UNUSED(params);
+    UNUSED(data);
+
     // Set up tprob
     double tprob = 0.5;
 
@@ -70,6 +73,9 @@ static MunitResult catch_or_not_zero_people(const MunitParameter params[], void*
 // Test: Simulate catch_or_not with population of one positive person, tprob = 0.5
 static MunitResult catch_or_not_one_person(const MunitParameter params[], void* data)
 {
+    UNUSED(params);
+    UNUSED(data);
+
     // Set up tprob
     double tprob = 0.5;
 
@@ -96,6 +102,9 @@ static MunitResult catch_or_not_one_person(const MunitParameter params[], void* 
 // Test: Simulate catch_or_not with population of one positive person, tprob = 1.0
 static MunitResult catch_or_not_one_person_tprob_one(const MunitParameter params[], void* data)
 {
+    UNUSED(params);
+    UNUSED(data);
+    
     // Set up tprob
     double tprob = 1.0;
 
@@ -121,6 +130,9 @@ static MunitResult catch_or_not_one_person_tprob_one(const MunitParameter params
 // Test: Simulate catch_or_not with population of twenty people with zero infected, tprob = 0.5
 static MunitResult catch_or_not_twenty_people_zero_infected(const MunitParameter params[], void* data)
 {
+    UNUSED(params);
+    UNUSED(data);
+    
     // Set up tprob
     double tprob = 0.5;
 
@@ -150,6 +162,9 @@ static MunitResult catch_or_not_twenty_people_zero_infected(const MunitParameter
 // Test: Simulate catch_or_not with population of twenty people with half infected, tprob = 0.5
 static MunitResult catch_or_not_twenty_people_half_infected(const MunitParameter params[], void* data)
 {
+    UNUSED(params);
+    UNUSED(data);
+    
     // Set up tprob
     double tprob = 0.5;
 
