@@ -1,5 +1,20 @@
 # notes
 
+## 6/23
+
+- Continued MT UT development
+- First UT uses global variables for `grand_total`, `gt_lock`, and settings such as the `bool` `use_lock`
+- Next UT relied on a passed in argument *struct* vs. *global vars*
+  - But still used the naïve algorithm of updating a shared `grand_total` for each iteration through the loop – tons of contentions
+
+### 6/23 next
+
+- Cleanup – document, refactor for shared code/data, *etc.* – the first two MT UTs mentioned above
+- Write pending UT that uses a local `sub_total` - smarter algorithm
+- Determine how to vary inputs: `thread_count`, `sum`, `use_lock`…
+
+Good luck and have fun!
+
 ## 6/7
 
 - Today we started w/Elena’s harrowing (❗) story
