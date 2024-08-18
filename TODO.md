@@ -1,13 +1,30 @@
 # notes
 
-## 6/23
+## 8/18
+
+- After a few meetings discussing home shopping/buying/ownership, and parenthood, today we started w/a bit of scatological talk WRT both cats 🐈 & babies 👶
+- Reviewed (deciphered😎?) MT UTs, including why relying on timing is a **very bad thing**, and how the (input) values for `nthreads`, `target_total` and `use_lock` impact results, and performance...
+  > Consider how you might time (using munit's built-in timing capabilities?) the impacts of these variables - for reference/inspiration:
+  1. [time(1) - Linux man page](https://linux.die.net/man/1/time)
+  2. [Date and time utilities - cppreference.com](https://en.cppreference.com/w/c/chrono)
+  3. [portable-snippets/clock · nemequ/portable-snippets](https://github.com/nemequ/portable-snippets/tree/master/clock)
+      > This is the timing code used by `munit`
+
+### 8/18 next
+
+- Complete UTs that demonstrate different *counter* behavior when varying the values of input values (see above)
+- Additionally, besides behavior, consider their impact on *performance*?
+
+Good luck and have fun!
+
+## 7/23
 
 - Continued MT UT development
 - First UT uses global variables for `grand_total`, `gt_lock`, and settings such as the `bool` `use_lock`
 - Next UT relied on a passed in argument *struct* vs. *global vars*
   - But still used the naïve algorithm of updating a shared `grand_total` for each iteration through the loop – tons of contentions
 
-### 6/23 next
+### 7/23 next
 
 - Cleanup – document, refactor for shared code/data, *etc.* – the first two MT UTs mentioned above
 - Write pending UT that uses a local `sub_total` - smarter algorithm
@@ -15,14 +32,14 @@
 
 Good luck and have fun!
 
-## 6/7
+## 7/7
 
 - Today we started w/Elena’s harrowing (❗) story
 - Discussed whether to use a MT `main()` vs. UTs and opted for the latter
 - Wrote a simple UT to create/join a thread and discussed how passing arguments is tricky:
   - Typical pattern is to `malloc()` a `struct` that contains the threads’ arguments
 
-### 6/7 next
+### 7/7 next
 
 - Complete UTs to implement/test counter:
   - Different count algorithms
