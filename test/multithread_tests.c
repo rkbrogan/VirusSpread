@@ -20,33 +20,12 @@ pthread_mutex_t grandTotalLock = PTHREAD_MUTEX_INITIALIZER;
 bool useLock = true;
 long grandTotal = 0;
 
-void* threadFunction(void* val)
+void* badThreadFunction(void* val)
 {
     UNUSED(val);
 
-    // int i  = *((int*) val);
-
-    // for (int i = 0; i < TOTAL; i++)
-    // {
-    //     if (useLock)
-    //     {
-    //         // Lock mutex
-    //         pthread_mutex_lock(&grandTotalLock);
-
-    //         // Increment grand total
-    //         grandTotal++;
-
-    //         // Unlock mutex
-    //         pthread_mutex_unlock(&grandTotalLock);
-    //     }
-    //     else    // For learning purposes
-    //     {
-    //         // Increment grand total
-    //         grandTotal++;
-    //     }
-    // }
-
     grandTotal += TOTAL;
+    // Won't work if this sleep() is not used (race conditions)
     sleep(1);
 
     return NULL;
@@ -60,6 +39,7 @@ typedef struct threadStruct_t
 
 } threadStruct;
 
+// The function we want to use
 void* threadFunction2(void* args)
 {
     threadStruct* threadArgs  = ((threadStruct*) args);
@@ -69,45 +49,37 @@ void* threadFunction2(void* args)
         if (threadArgs->grandTotalMutexPtr)
         {
             // Lock mutex
-            pthread_mutex_lock(threadArgs->grandTotalPtr);
+            pthread_mutex_lock(threadArgs->grandTotalMutexPtr);
 
             // Increment grand total
-            threadArgs->grandTotalPtr++;
+            (*(threadArgs->grandTotalPtr))++;
 
             // Unlock mutex
-            pthread_mutex_unlock(threadArgs->grandTotalPtr);
+            pthread_mutex_unlock(threadArgs->grandTotalMutexPtr);
         }
         else    // For learning purposes
         {
-            // Increment grand total
+            // Increment grand total (WRONG WAY OF DOING THINGS)
             threadArgs->grandTotalPtr++;
         }
     }
 }
 
 // Test with a total of 100 with locking
-static MunitResult mThread_program_one_hundred_with_lock(const MunitParameter params[], void* data)
+static MunitResult mThread_program_no_lock(const MunitParameter params[], void* data)
 {
     UNUSED(params);
     UNUSED(data);
     
-    // Arguments
-    // int total = 100;
-    int numOfThreads = NUM_OF_THREADS;
-    // int expectedTotal = total * numOfThreads;
-    // bool useLocks = false;
-    // UNUSED(useLocks);
+    // int numOfThreads = NUM_OF_THREADS;
+    int numOfThreads = 1000;
 
     pthread_t threadsArr[numOfThreads];
-
-    int valArr[numOfThreads];
 
     // Create each thread and run thread function
     for (int i = 0; i < numOfThreads; i++)
     {
-        valArr[i] = i;
-        int threadVal = pthread_create(&threadsArr[i], NULL, threadFunction, (void*) &valArr[i]);
-        // sleep(1);
+        int threadVal = pthread_create(&threadsArr[i], NULL, badThreadFunction, NULL);
         munit_assert_int(threadVal, == , 0);
     }
 
@@ -119,8 +91,6 @@ static MunitResult mThread_program_one_hundred_with_lock(const MunitParameter pa
     }
 
     // Assert total
-    // munit_assert_int(total, ==, expectedTotal);
-
     munit_assert_int(grandTotal, ==, EXPECTED_TOTAL);
 
     return MUNIT_OK;
@@ -147,7 +117,7 @@ static MunitResult mThread_struct_program_one_hundred_with_lock(const MunitParam
         threadArgsArr[i].total = TOTAL;
         threadArgsArr[i].grandTotalPtr = &grandTotal;
 
-        int threadVal = pthread_create(&threadsArr[i], NULL, threadFunction, (void*) &threadArgsArr[i]);
+        int threadVal = pthread_create(&threadsArr[i], NULL, badThreadFunction, (void*) &threadArgsArr[i]);
         // sleep(1);
         munit_assert_int(threadVal, == , 0);
     }
@@ -171,7 +141,7 @@ static MunitResult mThread_struct_program_one_hundred_with_lock(const MunitParam
 /*************** Full collection of multithread tests ******************/
 /**************************************************************/
 MunitTest multithread_tests[] = {
-    TEST(mThread_program_one_hundred_with_lock),
+    TEST(mThread_program_no_lock),
     TEST(mThread_struct_program_one_hundred_with_lock),
     {NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL}
 };
