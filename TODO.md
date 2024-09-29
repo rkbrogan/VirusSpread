@@ -1,5 +1,27 @@
 # notes
 
+## 9/9 & 9/29
+
+  > these notes include both meeting dates, as I forgot to enter the 9/9 notes in a timely manner - mea culpa❗
+
+- discussed home ownership and the need to become an *expert* in things that you never considered; plumbing, insulation, multiple-service accounts, *etc.*
+  > fun, fun, fun...😎
+- work update...boring...stagnating...you didn't have a lot to say that was good...
+- job search...not started...understandably...
+  - time to start job prep…put in place before baby
+  - leverage interests and knowledge (*e.g.*, qt, embedded) to help search for possible jobs
+  - what are the common interests/requirements/*etc.*?
+    - *e.g.*, business logic, gaming, qt/ui, drivers…
+
+### 9/29 next
+
+- find at least 3 job postings that we can review/discuss
+- continue work w/MT
+
+Good luck and have fun!
+
+---
+
 ## 8/18
 
 - After a few meetings discussing home shopping/buying/ownership, and parenthood, today we started w/a bit of scatological talk WRT both cats 🐈 & babies 👶
