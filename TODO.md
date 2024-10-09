@@ -1,5 +1,28 @@
 # notes
 
+## 10/7
+
+- reviewed 5 (?) job postings and decided/determined:
+  - there is **no** reason not to apply for all and *see what happens*
+    - most, if not all, had enough of an overlap that it was worth going through the process
+    - for *showstopper* items (*e.g.*, location), reach out and query as to whether it really is a showstopper
+  - multi-threaded (concurrent) programming is a consistent requirement
+    - continuing to work w/`pthreads` seems like a good path
+    - eventually, may want to convert code to use the `C` and/or `C++` threading models, as documented on [cppreference.com](https://en.cppreference.com/w/)
+- WRT another **requirement** - *lower level* programming - we did a quick overview of the [nand2tetris](https://www.nand2tetris.org/) project, structure and excellent supporting materials
+  - > *review and consider for future project*
+
+### 10/7 next
+
+- update artifacts (*e.g.*, resume, [LinkedIn](https://www.linkedin.com/in/riley-brogan-6a56a8117/), *etc.*) in preparation to apply for jobs
+  - apply for at least 3/5 jobs discussed today?
+- continue understanding of threads via UTs
+- work on the *counter* application - structured as a stand-alone app or UT(s)
+
+good luck and have fun!
+
+---
+
 ## 9/9 & 9/29
 
   > these notes include both meeting dates, as I forgot to enter the 9/9 notes in a timely manner - mea culpa❗
