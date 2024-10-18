@@ -1,5 +1,33 @@
 # notes
 
+## 10/15
+
+- moved MT `counter` into new repo (**invite pending**)
+- reviewed project structure
+  - TDD requires µnit integration – two options:
+    1. add *magic* CLA that invokes UTs when enabled (single executable, **minimal** changes to project structure or `Makefile`)
+    2. integrate µnit as in previous projects (multiple executables, **middling** changes to project structure and `Makefile`)
+- added `subtotal` switch to spec
+- discussed timer simplicity over accuracy
+- algorithm – both are simple but it essentially mean writing two algorithms or `thread_func()`-s
+  - supporting data structures
+- discussed the 0, 1, 2,… threads approach:
+  1. no calls to `pthread` - get app functioning serially - leave notes (code comments) where MT changes will be needed for 1. & 2.
+  2. one call to `pthread_create()` - ensure app still passes UTs / functions correctly
+  3. two or more worker threads - *ditto*
+- quick review of `getopt()`
+
+### 10/15 next
+
+- discussion on coding assistants?
+- TDD for CLA/`getopt()` state/config
+- TDD for `thread_func()`
+- implementation of CLA/`getopt()` state/config
+- implementation of `thread_func()`
+- job search related activities - see 10/7 next
+
+good luck and have fun!
+
 ## 10/7
 
 - reviewed 5 (?) job postings and decided/determined:
